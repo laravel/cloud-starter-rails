@@ -1,6 +1,6 @@
 # Rails starter kit
 
-A minimal [Ruby on Rails 8.1](https://rubyonrails.org) app on Ruby 4.0, generated with `rails new --minimal`. It has one controller with one page, and one test. It's a starting point: build the app the user asks for on top of it.
+A minimal [Ruby on Rails 8.1](https://rubyonrails.org) app on Ruby 4.0, generated with `rails new --minimal`. It has one controller serving a welcome screen, and one test. It's a starting point: build the app the user asks for on top of it.
 
 ## Commands
 
@@ -17,7 +17,7 @@ Run `bin/ci` after every change. It must pass.
 
 ## Structure
 
-- `config/routes.rb` maps URLs to controllers. `/` goes to `PagesController#home`.
+- `config/routes.rb` maps URLs to controllers. `/` goes to `PagesController#home`, which renders `app/views/pages/home.html.erb`, the Laravel Cloud welcome screen, without the layout. Replace it with the app's own home page.
 - `app/controllers/`, `app/views/`, and `app/models/` follow Rails conventions. `app/views/layouts/application.html.erb` is the HTML shell.
 - `test/` holds Minitest tests. `test/controllers/pages_controller_test.rb` tests the home page.
 - `config/ci.rb` defines the steps `bin/ci` runs.
@@ -69,5 +69,7 @@ Run background work as a custom worker background process on the environment, wi
 
 ### Managing the app
 
-Use the Laravel Cloud MCP server to deploy, read logs, change environment variables, and attach resources. Cloud's documentation for agents is at https://laravel.com/cloud/docs/llms.txt, and runtime details are at https://laravel.com/cloud/docs/runtimes.
+Use the [Laravel Cloud CLI](https://laravel.com/cloud/docs/api/cli) to deploy, read logs, change environment variables, and attach resources. It needs PHP 8.3 or later and Composer. Install it with `composer global require laravel/cloud-cli`, then run `cloud skills:install` to add Laravel Cloud skills to your agent. Run `cloud auth`, or set `LARAVEL_CLOUD_TOKEN` where a browser login isn't possible, and pass `-n` to every command so it never waits for input. A Laravel Cloud MCP server is coming and will cover the same tasks.
+
+Cloud's documentation for agents is at https://laravel.com/cloud/docs/llms.txt, and runtime details are at https://laravel.com/cloud/docs/runtimes.
 <!-- cloud:end -->
