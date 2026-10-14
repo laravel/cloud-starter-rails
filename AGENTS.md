@@ -1,13 +1,13 @@
 # Rails starter kit
 
-A minimal [Ruby on Rails 8.1](https://rubyonrails.org) app on Ruby 4.0, generated with `rails new --minimal`. It has one controller serving a welcome screen, and one test. It's a starting point: build the app the user asks for on top of it.
+A minimal [Ruby on Rails 8.1](https://rubyonrails.org) app on Ruby 4.0, generated with `rails new --minimal`, with Tailwind CSS through `tailwindcss-rails`. It has one controller serving a welcome screen, and one test. It's a starting point: build the app the user asks for on top of it.
 
 ## Commands
 
 | Task | Command |
 |---|---|
 | Install dependencies and prepare the database | `bin/setup --skip-server` |
-| Run locally | `bin/rails server -p 3000` |
+| Run locally, rebuilding Tailwind CSS on changes | `bin/dev` |
 | Run the tests | `bin/rails test` |
 | Lint and check style | `bin/rubocop` |
 | Fix style | `bin/rubocop -a` |
@@ -17,9 +17,11 @@ Run `bin/ci` after every change. It must pass.
 
 ## Structure
 
-- `config/routes.rb` maps URLs to controllers. `/` goes to `PagesController#home`, which renders `app/views/pages/home.html.erb`, the Laravel Cloud welcome screen, without the layout. Replace it with the app's own home page.
+- `config/routes.rb` maps URLs to controllers. `/` goes to `PagesController#home`, which renders `app/views/pages/home.html.erb`, the Laravel Cloud welcome screen. Replace it with the app's own home page.
 - `app/controllers/`, `app/views/`, and `app/models/` follow Rails conventions. `app/views/layouts/application.html.erb` is the HTML shell.
 - `test/` holds Minitest tests. `test/controllers/pages_controller_test.rb` tests the home page.
+- `app/assets/tailwind/application.css` imports Tailwind CSS. `tailwindcss-rails` compiles it with Tailwind's standalone binary, so there's no Node.js, into `app/assets/builds/tailwind.css`, which isn't committed.
+- `Procfile.dev` runs the server and the Tailwind watcher for `bin/dev`. It's for local development only: Cloud doesn't read it.
 - `config/ci.rb` defines the steps `bin/ci` runs.
 
 ## Conventions
@@ -33,7 +35,7 @@ Run `bin/ci` after every change. It must pass.
 
 ## On Laravel Cloud
 
-- Cloud detects Rails, installs gems, builds assets with `rails assets:precompile`, runs `bin/rails db:prepare` as the deploy command, and starts the app with `bin/rails server -b '::' -p $PORT`.
+- Cloud detects Rails, installs gems, builds assets with `rails assets:precompile` (which also compiles Tailwind CSS), runs `bin/rails db:prepare` as the deploy command, and starts the app with `bin/rails server -b '::' -p $PORT`.
 - The Ruby version comes from `.ruby-version`, read on every deploy.
 - Cloud sets `SECRET_KEY_BASE`, `RAILS_ENV=production`, `RAILS_LOG_TO_STDOUT`, and `APP_URL`. Cloud terminates HTTPS in front of the app, so `assume_ssl` and `force_ssl` are on in production.
 - **The database is SQLite, and Cloud's filesystem is ephemeral.** Anything saved is lost on the next deploy or restart. Before the app stores real data, attach a Postgres or MySQL database in Cloud, add the `pg` or `mysql2` gem, and point `production` in `config/database.yml` at `url: <%= ENV["DATABASE_URL"] %>`. Cloud formats `DATABASE_URL` for Rails.

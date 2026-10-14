@@ -4,7 +4,7 @@ A minimal Ruby on Rails 8.1 app on Ruby 4.0, ready to deploy to [Laravel Cloud](
 
 ```sh
 bin/setup --skip-server
-bin/rails server -p 3000
+bin/dev
 ```
 
 The app runs on http://localhost:3000. Run the tests with `bin/rails test`.
