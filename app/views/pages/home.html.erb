@@ -29,30 +29,11 @@
                 --button-text: #ffffff;
                 --button-hover: #000000;
                 --art-cover: #ffffff;
+                --art-dots: #80b5ff;
                 --art-text: #00080c;
                 --brand: #00080c;
                 --brand-muted: #a6acb0;
-                color-scheme: light dark;
-            }
-
-            @media (prefers-color-scheme: dark) {
-                :root {
-                    --page: #0a0a0a;
-                    --text: #ededec;
-                    --muted: #a1a09a;
-                    --card: #161615;
-                    --card-border: #fffaed2d;
-                    --line: #3e3e3a;
-                    --dot: #3e3e3a;
-                    --link: #83b7ff;
-                    --button: #eeeeec;
-                    --button-text: #1c1c1a;
-                    --button-hover: #ffffff;
-                    --art-cover: #0a0a0a;
-                    --art-text: #ffffff;
-                    --brand: #ffffff;
-                    --brand-muted: #a6acb0;
-                }
+                color-scheme: light;
             }
 
             body {
@@ -240,6 +221,7 @@
                 margin-bottom: -1px;
                 overflow: hidden;
                 border-radius: 0.5rem 0.5rem 0 0;
+                background: var(--art-dots);
                 color: var(--art-text);
             }
 
@@ -257,11 +239,6 @@
                 inset: 0;
             }
 
-            .art .noise {
-                width: 200%;
-                animation: drift 6s linear infinite;
-            }
-
             .art .cover {
                 color: var(--art-cover);
             }
@@ -274,18 +251,6 @@
                 font-weight: 600;
                 letter-spacing: -0.02em;
                 line-height: 1;
-            }
-
-            @keyframes drift {
-                to {
-                    transform: translateX(-50%);
-                }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-                .art .noise {
-                    animation: none;
-                }
             }
 
             @media (min-width: 64rem) {
@@ -381,23 +346,10 @@
                     </ul>
                     <a class="button" href="https://cloud.laravel.com" target="_blank">Open dashboard</a>
                     <p class="version muted">
-                        Rails <%= Rails.version %>
+                        Rails <%= Rails.version %> · Ruby <%= RUBY_VERSION %>
                     </p>
                 </div>
                 <div class="art" aria-hidden="true">
-                    <svg class="noise" height="100%">
-                        <filter id="welcome-noise" x="0%" y="0%" width="100%" height="100%">
-                            <feTurbulence type="fractalNoise" baseFrequency="0.004" stitchTiles="stitch" seed="1" />
-                            <feColorMatrix type="matrix" values="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1" />
-                            <feComponentTransfer>
-                                <feFuncR type="table" tableValues="0.15 0.25 0.45 0.7" />
-                                <feFuncG type="table" tableValues="0.35 0.45 0.62 0.8" />
-                                <feFuncB type="table" tableValues="1 1 1 1" />
-                            </feComponentTransfer>
-                        </filter>
-                        <rect id="welcome-noise-tile" width="50%" height="100%" filter="url(#welcome-noise)" />
-                        <use href="#welcome-noise-tile" x="50%" />
-                    </svg>
                     <svg class="cover" width="100%" height="100%">
                         <pattern id="welcome-dots" x="-3" y="-3" width="10" height="10" patternUnits="userSpaceOnUse">
                             <path

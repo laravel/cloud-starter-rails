@@ -7,6 +7,6 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", "Your Rails app is up and running on Laravel Cloud."
     assert_includes response.body, "Your Rails app is up and running on Laravel Cloud."
-    assert_includes response.body, "Rails #{Rails.version}"
+    assert_includes response.body, "Rails #{Rails.version} · Ruby #{RUBY_VERSION}"
   end
 end
