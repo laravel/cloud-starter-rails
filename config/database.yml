@@ -20,9 +20,8 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-# Cloud's filesystem is ephemeral, so this SQLite file is lost on every deploy.
-# Attach a Postgres database in Laravel Cloud and Rails connects to the
-# DATABASE_URL it sets instead, with the pg gem.
+# Production has no database until you attach one in Laravel Cloud. Cloud then
+# sets DATABASE_URL, which Rails merges into this config, and connects with the
+# pg gem.
 production:
   <<: *default
-  database: storage/production.sqlite3

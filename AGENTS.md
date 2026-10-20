@@ -31,14 +31,14 @@ Run `bin/ci` after every change. It must pass.
 - Style follows `rubocop-rails-omakase`. Don't disable cops to make a change pass.
 - Read settings that differ between environments with `ENV.fetch`. This kit has no `config/master.key` or encrypted credentials. Cloud sets `SECRET_KEY_BASE`, so don't add credentials files for secrets Cloud provides.
 - Add gems with `bundle add` so `Gemfile.lock` stays in sync, and commit the lockfile. Keep the `aarch64-linux` platforms in `Gemfile.lock`, because Cloud builds on them.
-- Active Record must stay. Cloud's deploy command is `bin/rails db:prepare`, which doesn't exist without it.
+- Active Record must stay. When a database is attached, Cloud's deploy command is `bin/rails db:prepare`, which doesn't exist without it.
 
 ## On Laravel Cloud
 
-- Cloud detects Rails, installs gems, builds assets with `rails assets:precompile` (which also compiles Tailwind CSS), runs `bin/rails db:prepare` as the deploy command, and starts the app with `bin/rails server -b '::' -p $PORT`.
+- Cloud detects Rails, installs gems, builds assets with `rails assets:precompile` (which also compiles Tailwind CSS), and starts the app with `bin/rails server -b '::' -p $PORT`.
 - The Ruby version comes from `.ruby-version`, read on every deploy.
 - Cloud sets `SECRET_KEY_BASE`, `RAILS_ENV=production`, `RAILS_LOG_TO_STDOUT`, and `APP_URL`. Cloud terminates HTTPS in front of the app, so `assume_ssl` and `force_ssl` are on in production.
-- **Without an attached database, production uses SQLite, and Cloud's filesystem is ephemeral.** Anything saved is lost on the next deploy or restart. Before the app stores real data, attach a Postgres database in Cloud. The `pg` gem is already installed, and Rails uses the `DATABASE_URL` Cloud sets over the SQLite settings in `config/database.yml`, so no code changes are needed. Development and tests stay on SQLite. For MySQL, add the `mysql2` gem instead.
+- **Production has no database until you attach one.** Development and tests use SQLite. Before the app uses models in production, attach a Postgres database in Cloud. Cloud then sets `DATABASE_URL`, which Rails merges into `config/database.yml`, and enables `bin/rails db:prepare` as the deploy command. The `pg` gem is already installed, so no code changes are needed. For MySQL, add the `mysql2` gem instead.
 
 <!-- cloud:start -->
 
