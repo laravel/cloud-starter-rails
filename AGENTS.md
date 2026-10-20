@@ -38,7 +38,7 @@ Run `bin/ci` after every change. It must pass.
 - Cloud detects Rails, installs gems, builds assets with `rails assets:precompile` (which also compiles Tailwind CSS), runs `bin/rails db:prepare` as the deploy command, and starts the app with `bin/rails server -b '::' -p $PORT`.
 - The Ruby version comes from `.ruby-version`, read on every deploy.
 - Cloud sets `SECRET_KEY_BASE`, `RAILS_ENV=production`, `RAILS_LOG_TO_STDOUT`, and `APP_URL`. Cloud terminates HTTPS in front of the app, so `assume_ssl` and `force_ssl` are on in production.
-- **The database is SQLite, and Cloud's filesystem is ephemeral.** Anything saved is lost on the next deploy or restart. Before the app stores real data, attach a Postgres or MySQL database in Cloud, add the `pg` or `mysql2` gem, and point `production` in `config/database.yml` at `url: <%= ENV["DATABASE_URL"] %>`. Cloud formats `DATABASE_URL` for Rails.
+- **Without an attached database, production uses SQLite, and Cloud's filesystem is ephemeral.** Anything saved is lost on the next deploy or restart. Before the app stores real data, attach a Postgres database in Cloud. The `pg` gem is already installed, and Rails uses the `DATABASE_URL` Cloud sets over the SQLite settings in `config/database.yml`, so no code changes are needed. Development and tests stay on SQLite. For MySQL, add the `mysql2` gem instead.
 
 <!-- cloud:start -->
 
